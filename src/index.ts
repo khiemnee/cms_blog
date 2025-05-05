@@ -1,13 +1,15 @@
 import express, {Express} from 'express'
-import router from './routers/user.router'
+import authRouter from './routers/auth.router'
+import userRouter from './routers/user.router'
+import { PORT } from './secret'
 
 const app:Express = express()
-const port = 3000
 
 app.use(express.json())
 
-app.use('/api/auth',router)
+app.use('/api/auth',authRouter)
+app.use('/api/user',userRouter)
 
-app.listen(port,()=>{
+app.listen(PORT,()=>{
     console.log('server is up')
 })

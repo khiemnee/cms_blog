@@ -1,11 +1,11 @@
-import  {Router} from "express";
-import { authLogin, authRegister, profile } from "../controllers/user.controller";
+import { Router } from "express";
+import { deleteUser, userById, users } from "../controllers/user.controller";
 import { auth } from "../middleware/auth";
 
 const router:Router = Router()
 
-router.post('/register', authRegister)
-router.post('/login',authLogin)
-router.get('/profile',auth,profile)
+router.get('/users',auth,users)
+router.get('/:id',auth,userById)
+router.delete('/:id',auth,deleteUser)
 
 export default router
