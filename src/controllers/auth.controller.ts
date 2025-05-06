@@ -6,11 +6,12 @@ import { SECERT_KEY } from "../secret";
 
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   try {
     const user = await prisma.user.create({
       data: {
         name,
+        role,
         email,
         password: await bcrypt.hash(password, 8),
       },
