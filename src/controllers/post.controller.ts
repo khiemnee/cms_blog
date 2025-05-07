@@ -1,12 +1,21 @@
 import { Request,Response } from "express";
 import prisma from "../prisma/client";
+import { PostModel, postSchema } from "../services/post.service";
 
 
 
 export const createPosts = async(req:Request,res:Response) =>{
     try {
-        const post = await prisma.post.create({
+
+        const postParse = postSchema.safeParse(req.body)
+
+        if(!postParse.success){
+            throw new Error(postParse.error.message)
+        }
+
+        const post:PostModel = await prisma.post.create({
             data : {
+                
                 authorById : req.user.id,
                 ...req.body
                 

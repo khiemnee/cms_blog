@@ -2,19 +2,29 @@ import { Request, Response } from "express";
 import prisma from "../prisma/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { UserModel,userSchema } from "../services/auth.service";
 import { SECERT_KEY } from "../secret";
 
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, password, role } = req.body;
+  const { password,role } = req.body;
+  
   try {
-    const user = await prisma.user.create({
-      data: {
-        name,
-        role,
-        email,
-        password: await bcrypt.hash(password, 8),
-      },
+    const userParsed = userSchema.safeParse(req.body)
+
+    if(!userParsed.success){
+      throw new Error(userParsed.error.message)
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 8);
+
+    
+    const user:UserModel = await prisma.user.create({
+     data : {
+      ...req.body,
+      role,
+      password : hashedPassword
+     }
     });
     res.status(201).send(user);
   } catch (error: unknown) {
