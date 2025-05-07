@@ -1,7 +1,9 @@
 import { Request,Response } from "express";
 import prisma from "../prisma/client";
 import { PostModel, postSchema } from "../services/post.service";
-
+import client from "../cache/redis";
+import { error } from "console";
+import { number } from "zod";
 
 
 export const createPosts = async(req:Request,res:Response) =>{
@@ -49,6 +51,12 @@ export const getPosts = async (req:Request,res:Response) =>{
     orderBy
 
    })
+
+   
+
+   if(req.postKey){
+        await client.setEx('posts',3600,JSON.stringify(posts))
+   }
 
    res.status(200).send(posts)
    
@@ -120,6 +128,43 @@ export const updatePosts = async (req:Request,res:Response) =>{
         })
 
         res.status(200).send(postUpdate)
+    } catch (error:unknown) {
+        if(error instanceof Error){
+            res.status(500).send(error.message)
+        }
+    }
+}
+
+export const getPostId = async(req:Request,res:Response) =>{
+    try {
+        const post = await prisma.post.findFirst({
+            where : {
+                id : req.params.id
+            }
+        })
+
+        if(!post){
+          throw new Error('Post not found!!!')
+        }   
+
+        if(req.postIdKey){
+            await client.setEx(req.postIdKey.toString(),3600,JSON.stringify(post))
+           
+        }
+
+        const views = Number(await client.get(`post:${req.params.id}:views`))
+
+        await prisma.post.update({
+            where : {
+                id : req.params.id
+            },
+            data : {
+                views 
+            }
+        })
+
+        res.status(200).send({post,views})
+
     } catch (error:unknown) {
         if(error instanceof Error){
             res.status(500).send(error.message)

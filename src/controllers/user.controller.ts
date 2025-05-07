@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../prisma/client";
+import client from "../cache/redis";
 
 export const users = async (req: Request, res: Response) => {
   try {
@@ -28,6 +29,9 @@ export const userById = async(req:Request,res:Response) => {
             throw new Error('User not found')
         }
 
+        if(req.userKey){
+            await client.setEx(req.userKey.toString(),3600,JSON.stringify(user))
+        }
     
 
         res.status(200).send(user)
