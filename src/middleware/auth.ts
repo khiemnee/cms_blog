@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 import prisma from "../prisma/client";
+import { SECERT_KEY } from "../secret";
 
 interface MyPayload extends jwt.JwtPayload {
     id: string;
@@ -11,7 +12,7 @@ export const auth = async (req:Request,res:Response,next:NextFunction) =>{
 
     try {
         const token = req.header('Authorization')!.replace('Bearer ','')
-        const decode =  jwt.verify(token,'cmsblogkey') as MyPayload
+        const decode =  jwt.verify(token,SECERT_KEY!.toString()) as MyPayload
     
     
         const {id} = decode
@@ -28,7 +29,7 @@ export const auth = async (req:Request,res:Response,next:NextFunction) =>{
         next()
     } catch (error) {
         if (error instanceof Error) {
-            res.status(404).send(error.message);
+            res.status(403).send(error.message);
           }
     }
    

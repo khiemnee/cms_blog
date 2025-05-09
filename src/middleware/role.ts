@@ -10,7 +10,7 @@ export const checkRole = async (req:Request,res:Response,next:NextFunction) =>{
         next()
     } catch (error:unknown) {
         if (error instanceof Error) {
-            res.status(404).send(error.message);
+            res.status(403).send(error.message);
           }
     }
 }

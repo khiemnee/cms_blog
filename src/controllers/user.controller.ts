@@ -7,7 +7,7 @@ export const users = async (req: Request, res: Response) => {
     const users = await prisma.user.findMany();
 
     if (!users) {
-      throw new Error("Users not found!!");
+      throw new Error("Users not found!");
     }
     res.status(200).send(users);
   } catch (error: unknown) {
