@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import prisma from "../prisma/client";
+import prisma from "../client/client";
 import { PostModel, postSchema } from "../services/post.service";
 import client from "../cache/redis";
 import { error } from "console";

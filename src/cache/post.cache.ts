@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import client from "./redis";
-import prisma from "../prisma/client";
+import prisma from "../client/client";
 
 export const postsCache = async (
   req: Request,

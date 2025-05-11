@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
-import prisma from "../prisma/client";
+import prisma from "../client/client";
 import { SECERT_KEY } from "../secret";
 
 interface MyPayload extends jwt.JwtPayload {

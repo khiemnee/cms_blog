@@ -1,5 +1,5 @@
 import { Request,Response } from "express";
-import prisma from "../prisma/client";
+import prisma from "../client/client";
 
 export const createComments = async (req:Request,res:Response) => {
     try {

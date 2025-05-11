@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../prisma/client";
+import prisma from "../client/client";
 import client from "../cache/redis";
 
 export const users = async (req: Request, res: Response) => {
