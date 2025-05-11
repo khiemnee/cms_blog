@@ -4,8 +4,7 @@ import userRouter from './routers/user.router'
 import categoryRouter from './routers/categories.router'
 import postsRouter from './routers/post.router'
 import commentsRouter from './routers/comments.router'
-import cors from "cors";
-
+import cors from 'cors'
 
 const app:Express = express()
 
