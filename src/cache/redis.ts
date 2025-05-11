@@ -1,13 +1,14 @@
 import { createClient } from 'redis';
+import { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME } from '../secret';
 
 
 
 const client = createClient({
-    username: 'default',
-    password: 'oDVreALQpbx9MH1dx4IBzawPAPx94xt9',
+    username: REDIS_USERNAME,
+    password: REDIS_PASSWORD,
     socket: {
-        host: 'redis-19997.crce194.ap-seast-1-1.ec2.redns.redis-cloud.com',
-        port: 19997
+        host: REDIS_HOST!,
+        port: Number(REDIS_PORT),
     }
 });
 
