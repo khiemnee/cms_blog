@@ -3,3 +3,4 @@ src/models
 src/prisma
 .env
 test
+src/secret
